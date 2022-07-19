@@ -7,7 +7,12 @@ const serialNumber = require("./serialNumber");
 io.on("connection", function (socket) {
   console.log("Usuario conectado al socket de Agente");
   serialNumber(function (err, value) {
-    socket.emit("serialNumber", value);
+    if (value) {
+      socket.emit("haveSerial", "LISTO");
+      setTimeout(() => {
+        socket.emit("serialNumber", value);
+      }, 5000);
+    }
   });
   socket.on("disconnect", function () {
     console.log("user disconnected");
